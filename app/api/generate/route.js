@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
-export const dynamic = "force-dynamic"; // 🔑 REQUIRED FOR VERCEL
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export async function POST(request) {
   try {
@@ -11,9 +12,7 @@ export async function POST(request) {
     const db = client.db("bitlinks");
     const collection = db.collection("url");
 
-    const existing = await collection.findOne({
-      shorturl: body.shorturl,
-    });
+    const existing = await collection.findOne({ shorturl: body.shorturl });
 
     if (existing) {
       return NextResponse.json(
@@ -32,8 +31,8 @@ export async function POST(request) {
       { success: true, message: "URL Generated Successfully" },
       { status: 201 }
     );
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
       { status: 500 }
