@@ -1,20 +1,5 @@
 import { redirect } from "next/navigation";
-import clientPromise from "@/lib/mongodb";
 
-export default async function Page({ params }) {
-  const { shorturl } = params;
-
-  const client = await clientPromise;
-  const db = client.db("bitlinks");
-  const collection = db.collection("url");
-
-  const doc = await collection.findOne({ shorturl });
-
-  if (doc) {
-    // Redirect to original URL
-    redirect(doc.url);
-  } else {
-    // Redirect to home page if not found
-    redirect("/");
-  }
+export default function Page({ params }) {
+  redirect("https://google.com");
 }
